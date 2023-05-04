@@ -2,6 +2,18 @@
 #define LINKEDLIST_H
 #include "Node.h"
 
+#include <iostream>
+#include <string>
+#include <cassert>
+#include <sstream>
+#include <vector>
+#include <iostream>
+#include <string.h>
+#include <random>
+
+
+using std::string;
+using std::vector;
 
 class LinkedList
 {
@@ -9,6 +21,9 @@ public:
     LinkedList();
     ~LinkedList();
 
+    bool insert(std::vector<std::string> data);
+    string toString();
+    
     int size();
     void clear();
     int get(int i);
