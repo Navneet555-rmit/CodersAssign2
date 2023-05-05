@@ -26,7 +26,7 @@ public:
     
     int size();
     void clear();
-    int get(int i);
+    Stock* get(int i);
 
     void addFront(int data);
     void addBack(int data);

@@ -80,6 +80,28 @@ string LinkedList::toString(){
     return new_string;
 }
 
+int LinkedList::size() {
+    return count;
+}
+
+Stock* LinkedList::get(int i) {
+    Stock* lastNode = nullptr;
+
+    if (i >= 0 && i < size()){
+
+        int counter = 0;
+        Node* current = head;
+
+        while (counter < i){
+            ++counter;
+            current = current->next;
+        }
+
+        lastNode = current->data;
+    }
+    return lastNode;
+}
+
 LinkedList::~LinkedList() {
     // TODO
 }

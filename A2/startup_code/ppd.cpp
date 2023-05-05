@@ -30,16 +30,16 @@ std::map<int, Coin> cash_register;
 
  const string menuText = 
                 "Main Menu\n"
-                "   1.Display Items\n"
-                "   2.Purchase Items\n"
-                "   3.Save and Exit\n"
+                "        1. Display Items\n"
+                "        2. Purchase Items\n"
+                "        3. Save and Exit\n"
                 "Administrator-Only Menu:\n"
-                "   4.Add Item\n"
-                "   5.Remove Item\n"
-                "   6.Display Coins\n"
-                "   7.Reset Stock\n"
-                "   8.Reset Coins\n"
-                "   9.Abort Program";
+                "        4. Add Item\n"
+                "        5. Remove Item\n"
+                "        6. Display Coins\n"
+                "        7. Reset Stock\n"
+                "        8. Reset Coins\n"
+                "        9. Abort Program";
                 ; 
 
 
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 
     std::cout << menuText << std::endl;
     while (true) {
-        std::cout << "\nSelect your option (1-9):";
+        std::cout << "\nSelect your option (1-9): ";
         string input  = Helper::readInput();
 
         if (input == "1")
@@ -110,12 +110,15 @@ int main(int argc, char **argv)
 
         }
         else if (input == "3")
-        {
-            
+        {      
+            return EXIT_SUCCESS;
         }
         else if (input == "4")
         {
-
+            int size = items.size();
+            Stock* lastItem = items.get(size-1);
+            std::string newID = lastItem->id;
+            std::cout << "The id of the new stock will be: " << newID << std::endl;
         }
         else if (input == "5")
         {
@@ -126,6 +129,5 @@ int main(int argc, char **argv)
 
         }
     }
-    
-    return EXIT_SUCCESS;
+
 }
