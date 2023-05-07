@@ -84,23 +84,56 @@ int LinkedList::size() {
     return count;
 }
 
-Stock* LinkedList::get(int i) {
-    Stock* lastNode = nullptr;
+string LinkedList::getNextID() {
+    int i = 0;
+    Node* current = head;
+    std::string currentItem = current->data->id;
+    std::string nextItem = "";
+    int currentID = std::stoi(currentItem.substr(1));
+    int nextID = 0;
+        while (i < size() - 1) {
+            current = current->next;
+            nextItem = current->data->id;
+            nextID = std::stoi(nextItem.substr(1));
+            if (nextID > currentID) {
+                currentID = nextID;
+                currentItem = nextItem;
+            }
+            i += 1;
+        }
 
-    if (i >= 0 && i < size()){
+        // item = current->data;
+        // std::cout << lastNode->name;
+    return currentItem;
+    }
+   
 
-        int counter = 0;
+int LinkedList::getPosition(Stock* item) {
+    int index = 0;
+    Node* current = head;
+    // std::cout << current->data->name << std::endl;
+    while (current->next != NULL && current->next->data->name < item->name) {
+        current = current->next;
+        // std::cout << current->data->name << std::endl;
+        index += 1;
+    }
+    return index;
+}
+
+void LinkedList::addAtPosition(Stock* item, int position) {
         Node* current = head;
-
-        while (counter < i){
-            ++counter;
+        int i = 0;
+        while (i < position) {
+            i += 1;
             current = current->next;
         }
 
-        lastNode = current->data;
+        Node* newItem = new Node();
+        newItem->data = item;
+        newItem->next = current;
+        current = newItem;
+        count += 1;
     }
-    return lastNode;
-}
 
 LinkedList::~LinkedList() {
     // TODO

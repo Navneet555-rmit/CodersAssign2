@@ -26,7 +26,9 @@ public:
     
     int size();
     void clear();
-    Stock* get(int i);
+    string getNextID();
+    int getPosition(Stock* item);
+    void addAtPosition(Stock* item, int position);
 
     void addFront(int data);
     void addBack(int data);

@@ -97,6 +97,7 @@ int main(int argc, char **argv)
     }
 
     std::cout << menuText << std::endl;
+    vector<string> tokens = {};
     while (true) {
         std::cout << "\nSelect your option (1-9): ";
         string input  = Helper::readInput();
@@ -115,10 +116,44 @@ int main(int argc, char **argv)
         }
         else if (input == "4")
         {
-            int size = items.size();
-            Stock* lastItem = items.get(size-1);
-            std::string newID = lastItem->id;
-            std::cout << "The id of the new stock will be: " << newID << std::endl;
+            std::string ID = items.getNextID();
+            std::cout << "The id of the new stock will be: " << ID << std::endl;
+            std::cout << "Enter the item name: ";
+            std::string itemName = Helper::readInput();
+            std::cout << "Enter the item description: ";
+            std::string itemDesc = Helper::readInput();
+            bool validPrice = false;
+            while (validPrice == false) {
+                std::cout << "Enter the item price: ";
+                std::string inputPrice = Helper::readInput();
+                Helper::splitString(inputPrice, tokens, ".");
+                if (tokens.size() == 2) {
+                    if (Helper::isNumber(tokens[0]) == true && 
+                    Helper::isNumber(tokens[1]) == true) {
+                        Price* itemPrice = new Price();
+                        itemPrice->dollars = stoi(tokens[0]);
+                        itemPrice->cents = stoi(tokens[1]);
+                        Stock* newItem = new Stock();
+                        newItem->id = ID;
+                        newItem->name = itemName;
+                        newItem->description = itemDesc;
+                        newItem->price = *itemPrice;
+                        int index = items.getPosition(newItem);
+                        items.addAtPosition(newItem, index);
+                        // std::cout << index;
+                        std::cout << "This item " << "\"" << itemName << " - "
+                        << itemDesc << "\" has now been added to the menu.\n";
+                        validPrice = true;
+                    } else {
+                        std::cout << "Error: the price is not valid.\n";
+                    }
+                } else {
+                    std::cout << "Error: the price is not valid.\n";
+                }
+            }
+
+
+
         }
         else if (input == "5")
         {
