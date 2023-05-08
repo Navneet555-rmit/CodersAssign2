@@ -85,32 +85,40 @@ int LinkedList::size() {
 }
 
 string LinkedList::getNextID() {
-    int i = 0;
     Node* current = head;
     std::string currentItem = current->data->id;
     std::string nextItem = "";
     int currentID = std::stoi(currentItem.substr(1));
     int nextID = 0;
-        while (i < size() - 1) {
-            current = current->next;
-            nextItem = current->data->id;
-            nextID = std::stoi(nextItem.substr(1));
-            if (nextID > currentID) {
-                currentID = nextID;
-                currentItem = nextItem;
-            }
-            i += 1;
+    while (current->next != NULL) {
+        current = current->next;
+        nextItem = current->data->id;
+        nextID = std::stoi(nextItem.substr(1));
+        if (nextID > currentID) {
+            currentID = nextID;
+            currentItem = nextItem;
         }
-
-        // item = current->data;
-        // std::cout << lastNode->name;
-    return currentItem;
     }
+    currentID += 1;
+    std::string newID = "I" + std::to_string(currentID);
+    int numOfDigits = 0;
+    while (currentID != 0) {
+        currentID = currentID / 10;
+        numOfDigits += 1;
+    }
+    int i = 1;
+    while (i != IDLEN-numOfDigits) {
+        newID.insert(1, "0");
+        i += 1;
+    }
+    return newID;
+}
    
 
 int LinkedList::getPosition(Stock* item) {
     int index = 0;
     Node* current = head;
+    // std::string itemName = std::toupper(item->name);
     // std::cout << current->data->name << std::endl;
     while (current->next != NULL && current->next->data->name < item->name) {
         current = current->next;
@@ -121,6 +129,14 @@ int LinkedList::getPosition(Stock* item) {
 }
 
 void LinkedList::addAtPosition(Stock* item, int position) {
+    if (position == 0) {
+        Node* newItem = new Node();
+        newItem->data = item;
+        newItem->next = head;
+        head = newItem;
+        count += 1;
+
+    } else {
         Node* current = head;
         int i = 0;
         while (i < position) {
@@ -130,10 +146,11 @@ void LinkedList::addAtPosition(Stock* item, int position) {
 
         Node* newItem = new Node();
         newItem->data = item;
-        newItem->next = current;
-        current = newItem;
+        newItem->next = current->next;
+        current->next = newItem;
         count += 1;
     }
+}
 
 LinkedList::~LinkedList() {
     // TODO

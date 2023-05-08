@@ -138,6 +138,7 @@ int main(int argc, char **argv)
                         newItem->name = itemName;
                         newItem->description = itemDesc;
                         newItem->price = *itemPrice;
+                        newItem->on_hand = DEFAULT_STOCK_LEVEL;
                         int index = items.getPosition(newItem);
                         items.addAtPosition(newItem, index);
                         // std::cout << index;
