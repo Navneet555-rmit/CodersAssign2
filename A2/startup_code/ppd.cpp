@@ -18,6 +18,7 @@
 using std::string;
 using std::vector;
 
+
 LinkedList items;
 std::map<int, Coin> cash_register;
 
@@ -98,12 +99,13 @@ int main(int argc, char **argv)
 
     std::cout << menuText << std::endl;
     while (true) {
+        LinkedList linked;
         std::cout << "\nSelect your option (1-9):";
         string input  = Helper::readInput();
 
         if (input == "1")
         {
-
+        items.DisplayItems();
         }
         else if (input == "2")
         {
@@ -128,4 +130,6 @@ int main(int argc, char **argv)
     }
     
     return EXIT_SUCCESS;
+
+    
 }

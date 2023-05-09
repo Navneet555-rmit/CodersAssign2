@@ -2,6 +2,9 @@
 #define LINKEDLIST_H
 #include "Node.h"
 
+#include <string.h>
+#include <string.h>
+
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -22,7 +25,8 @@ public:
     ~LinkedList();
 
     bool insert(std::vector<std::string> data);
-    string toString();
+    void DisplayItems();
+    std::string toString();
     
     int size();
     void clear();
@@ -36,6 +40,8 @@ public:
 
     void addAt(int i);
     void deleteAt(int i);
+
+    
     // more functions to be added perhaps...
 
 private:
