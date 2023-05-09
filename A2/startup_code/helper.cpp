@@ -1,7 +1,9 @@
 #include "helper.h"
+#include <regex>
 
 using std::string;
 using std::vector;
+using std::cin;
 
 Helper::Helper(){}
 
@@ -58,5 +60,27 @@ string Helper::readInput()
     std::cout << std::endl;
 
     return input;
+}
+
+bool Helper::checkUserInputForRemoveItem(string userInput)
+{
+    std::regex pattern("^I\\d{4}$");
+
+    while (userInput == "")
+    {
+        std::cout << "Please input a valid answer" << std::endl;
+        userInput = Helper::readInput();
+    }
+    // Matching regex and is not eof
+    if (std::regex_match(userInput, pattern) && !cin.eof())
+    {
+        //linked_list->remove_index(3);
+        return true;
+    } else {
+        std::cout << "ID invalid or was not found" << std::endl;
+        
+    }
+
+    return false;
 }
 
