@@ -47,5 +47,7 @@ public:
 
     static bool isProbability(double p); //////
 
+    static bool checkUserInputForRemoveItem(string userInput);
+
 };
 #endif
