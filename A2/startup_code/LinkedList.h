@@ -2,6 +2,9 @@
 #define LINKEDLIST_H
 #include "Node.h"
 
+#include <string>
+#include <string.h>
+
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -11,9 +14,9 @@
 #include <string.h>
 #include <random>
 
-
 using std::string;
 using std::vector;
+
 
 class LinkedList
 {
@@ -21,22 +24,11 @@ public:
     LinkedList();
     ~LinkedList();
 
+    int size();
+
     bool insert(std::vector<std::string> data);
     string toString();
-    
-    int size();
-    void clear();
-    int get(int i);
-
-    void addFront(int data);
-    void addBack(int data);
-    
-    void deleteFront();
-    void deleteBack();
-
-    void addAt(int i);
-    void deleteAt(int i);
-    // more functions to be added perhaps...
+    void remove_index(int index);
 
 private:
     // the beginning of the list
