@@ -42,10 +42,9 @@ public:
      * @return the user input.
      */
     static std::string readInput();
-
+    static void waitForEnter(); 
     static void printInvalidInput();
 
-    static bool isProbability(double p); //////
-
+    
 };
 #endif

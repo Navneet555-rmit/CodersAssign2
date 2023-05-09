@@ -6,12 +6,9 @@
 #include <string.h>
 
 #include <iostream>
-#include <string>
 #include <cassert>
 #include <sstream>
 #include <vector>
-#include <iostream>
-#include <string.h>
 #include <random>
 
 using std::string;
@@ -24,11 +21,9 @@ public:
     LinkedList();
     ~LinkedList();
 
-    int size();
-
-    bool insert(std::vector<std::string> data);
-    string toString();
-    void remove_index(int index);
+    bool Insert(Stock * data);
+    Node* Peek();
+    void DisplayItems();
 
 private:
     // the beginning of the list

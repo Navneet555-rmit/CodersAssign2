@@ -15,6 +15,9 @@ bool Helper::isNumber(string s)
     string::const_iterator it = s.begin();
     char dot = '.';
     int nb_dots = 0;
+
+    s.erase(0, s.find_first_not_of(" \t\r\n"));
+    s.erase(s.find_last_not_of(" \t\r\n") + 1); 
     while (it != s.end()) 
     {
         if (*it == dot)
