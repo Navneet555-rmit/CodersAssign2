@@ -118,36 +118,47 @@ string LinkedList::getNextID() {
 int LinkedList::getPosition(Stock* item) {
     int index = 0;
     Node* current = head;
-    // std::string itemName = std::toupper(item->name);
-    // std::cout << current->data->name << std::endl;
-    while (current->next != NULL && current->next->data->name < item->name) {
+    std::string itemName = item->name;
+    std::string currentItemName = current->data->name;
+    itemName[0] = std::toupper(itemName[0]);
+    currentItemName[0] = std::toupper(currentItemName[0]);
+    std::cout << current->data->name << std::endl;
+    while (current->next != nullptr && currentItemName < itemName) {
         current = current->next;
-        // std::cout << current->data->name << std::endl;
+        currentItemName = current->data->name;
+        currentItemName[0] = std::toupper(currentItemName[0]);
+        std::cout << current->data->name << std::endl;
         index += 1;
     }
     return index;
 }
 
 void LinkedList::addAtPosition(Stock* item, int position) {
-    if (position == 0) {
+    Node* current = head;
+    Node* prev = nullptr;
+    int i = 0;
+    while (i < position) {
+        i += 1;
+        prev = current;
+        current = current->next;
+    }
+    if (i == 0) {
         Node* newItem = new Node();
         newItem->data = item;
         newItem->next = head;
         head = newItem;
         count += 1;
-
-    } else {
-        Node* current = head;
-        int i = 0;
-        while (i < position) {
-            i += 1;
-            current = current->next;
-        }
-
+    } else if (current->next == nullptr) {
         Node* newItem = new Node();
         newItem->data = item;
-        newItem->next = current->next;
+        newItem->next = nullptr;
         current->next = newItem;
+        count += 1;
+    } else {
+        Node* newItem = new Node();
+        newItem->data = item;
+        prev->next = newItem;
+        newItem->next = current;
         count += 1;
     }
 }

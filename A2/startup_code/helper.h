@@ -47,7 +47,7 @@ public:
 
     static bool isProbability(double p); //////
 
-    static bool checkUserInputForRemoveItem(string userInput);
+    static bool checkUserInputForRemoveItem(std::string userInput);
 
 };
 #endif

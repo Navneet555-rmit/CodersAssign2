@@ -141,7 +141,7 @@ int main(int argc, char **argv)
                         newItem->on_hand = DEFAULT_STOCK_LEVEL;
                         int index = items.getPosition(newItem);
                         items.addAtPosition(newItem, index);
-                        // std::cout << index;
+                        std::cout << index;
                         std::cout << "This item " << "\"" << itemName << " - "
                         << itemDesc << "\" has now been added to the menu.\n";
                         validPrice = true;
@@ -152,9 +152,6 @@ int main(int argc, char **argv)
                     std::cout << "Error: the price is not valid.\n";
                 }
             }
-
-
-
         }
         else if (input == "5")
         {
