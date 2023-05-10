@@ -129,7 +129,6 @@ void LinkedList::remove_index(string index)
         }
 
         counter_remove = counter_remove + 1;
-       
     }
 
     if (was_found)
@@ -153,7 +152,6 @@ void LinkedList::remove_index(string index)
             std::cout << "ID was not found" << std::endl;
         }
     }
-   
 }
 
 void LinkedList::DisplayItems()
@@ -248,17 +246,19 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                           << ":" << std::endl;
 
                 string userInput_change = Helper::readInput();
-                
-                if (userInput == "") {
+
+                if (userInput_change.empty())
+                {
                     std::cout << "Purchase canceled, money is refunded" << std::endl;
+                    gave_money = true;
                 }
+
+                cash_owed = cash_owed - stoi(userInput_change);
 
                 // user validations to check if digit, valid denom etc etc
                 // bool check if valid denom, if false Error: $3.00 is not a valid denomination of money. Please try again
                 // bool check if is digit, if false Error: hi is not a valid number
-                // check of eof
-
-                cash_owed = cash_owed - stoi(userInput_change);
+                
 
                 // Handed direct change
                 if (cash_owed == 0)
