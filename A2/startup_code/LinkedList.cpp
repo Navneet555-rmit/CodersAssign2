@@ -43,15 +43,12 @@ bool LinkedList::Insert(Stock* new_stock){
         stockName.begin(), ::toupper);
         transform(currentStockName.begin(), currentStockName.end(), 
         currentStockName.begin(), ::toupper);
-        // std::cout << stockName << std::endl;
-        // std::cout << currentStockName << std::endl;
         while (current->next != nullptr && currentStockName < stockName) {
             prev = current;
             current = current->next;
             currentStockName = current->data->name;
             transform(currentStockName.begin(), currentStockName.end(), 
             currentStockName.begin(), ::toupper);
-            // std::cout << stockName << " is greater than " << currentStockName << std::endl;
         }
 
         if (prev == nullptr)

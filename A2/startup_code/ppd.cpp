@@ -64,7 +64,7 @@ void Menu(){
                 std::cout << MENU_CUST;
             }
     
-       
+        cout << "\nSelect your option (1-9): ";
         string input = Helper::readInput();
 
         if (input == "1")
@@ -84,44 +84,65 @@ void Menu(){
         }
         else if (input == "4" && isAdmin)
         {
+            // Get the next ID for the new item
             string ID = inventory.getNextID();
             cout << "The id of the new stock will be: " << ID << endl;
+            // Initalize variables
             bool success = false;
             vector<string> tokens = {};
             while (!success) {
+                // Get input from user
                 cout << "Enter the item name: ";
                 string itemName = Helper::readInput();
                 Helper::splitString(itemName, tokens, ".");
+                // If user input is whitespace, cancel add task
                 if (tokens.size() == 0) {
                     success = true;
                     Helper::cancelAddTask();
+               /*
+                * If length of input is above maximum length,
+                * alert user that the input is too long
+                */ 
                 } else if (itemName.length() > NAMELEN) {
                     Helper::printLongInput();
                 } else {
+                     // Get input from user
                     cout << "Enter the item description: ";
                     string itemDesc = Helper::readInput();
                     Helper::splitString(itemDesc, tokens, ".");
+                    // If user input is whitespace, cancel add task
                     if (tokens.size() == 0) {
                         success = true;
                         Helper::cancelAddTask();
+                   /*
+                    * If length of input is above maximum length,
+                    * alert user that the input is too long
+                    */ 
                     } else if (itemDesc.length() > DESCLEN) {
                         Helper::printLongInput();
                     } else {
                         bool priceSuccess = false;
                         while (priceSuccess == false) {
+                            // Get input from user
                             cout << "Enter the item price: ";
                             string itemPrice = Helper::readInput();
                             Helper::splitString(itemPrice, tokens, ".");
+                            // If user input is whitespace, cancel add task
                             if (tokens.size() == 0) {
                                 priceSuccess = true;
                                 success = true;
                                 Helper::cancelAddTask();
+                            // Check if input has two strings separated by "."
                             } else if (tokens.size() == 2) {
+                                // Check if the two strings are numbers
                                 if (Helper::isNumber(tokens[0]) == true && 
                                 Helper::isNumber(tokens[1]) == true) {
+                                    // Check if the second string is divisible by 5
                                     if (stoi(tokens[1]) % 5 == 0) {
+                                        // Create vector containing the new item's details
                                         vector<string> data = Helper::createVector(
                                         ID, itemName, itemDesc, itemPrice);
+                                        // Add item to inventory
                                         inventory.AddItem(data);
                                         cout << "This item " << "\"" << itemName
                                         << " - " << itemDesc << "\" has now " <<
@@ -129,12 +150,17 @@ void Menu(){
                                         priceSuccess = true;
                                         success = true;
                                     } else {
+                                       /*
+                                        * If second string (cents) is not divisible
+                                        * by 5, alert user
+                                        */ 
                                         Helper::printCentsNotMultipleOf5();
                                     }
-
+                                // If either string is not a number, alert user
                                 } else {
                                     Helper::printInvalidPrice();
                                 }
+                            // If input is not two strings separated by ".", alert user
                             } else {
                                 Helper::printInvalidPrice();
                             }
