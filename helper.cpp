@@ -5,6 +5,9 @@ using std::cin;
 using std::string;
 using std::vector;
 
+#include <iomanip>
+
+
 Helper::Helper() {}
 
 void Helper::printInvalidInput()
@@ -141,4 +144,15 @@ bool Helper::isValidDenom(std::string userInput)
     }
 
     return valid_denom;
+}
+std::string Helper::convert_cents_to_dollars(std::string userInput)
+{
+    int cents = stoi(userInput);
+
+    int dollars = cents / 100;
+    int cents_remaining = cents % 100;
+
+    std::ostringstream formatted;
+    formatted << "$" << dollars << "." << std::setfill('0') << std::setw(2) << cents_remaining;
+    return formatted.str();
 }

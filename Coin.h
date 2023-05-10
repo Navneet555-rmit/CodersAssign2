@@ -26,18 +26,22 @@ public:
     enum Denomination denom;
 
     // the count of how many of these are in the cash register
-    unsigned count;
+    int count;
 
     Coin();
 
     // the denom and how many coins there are of said denom
-    Coin(Denomination denom, unsigned count);
+    Coin(Denomination denom, int count);
 
     void print();
 
     // changing the coins from file into denomation to work with
     // reference: https://cplusplus.com/forum/beginner/231488/
     static Denomination coin_file_to_denomation(unsigned file_denom);
+
+    void incrementCount();
+
+    void decrementCount();
 
     // WOULD I NEED A DECONSTRUCTER???S
 };

@@ -17,24 +17,38 @@ void CashRegister::Load_file_coins(string filepath)
 {
 }
 
-int CashRegister::coin_file_to_denomation(Denomination file_denom) {
+int CashRegister::coin_file_to_denomation(Denomination file_denom)
+{
     int index = 0;
 
-    if(file_denom == 10){
+    if (file_denom == 10)
+    {
         index = 1;
-    }else if(file_denom == 20){
+    }
+    else if (file_denom == 20)
+    {
         index = 2;
-    }else if(file_denom == 50){
+    }
+    else if (file_denom == 50)
+    {
         index = 3;
-    }else if(file_denom == 100){
+    }
+    else if (file_denom == 100)
+    {
         index = 4;
-    }else if(file_denom == 200){
+    }
+    else if (file_denom == 200)
+    {
         index = 5;
-    }else if(file_denom == 500){
+    }
+    else if (file_denom == 500)
+    {
         index = 6;
-    }else if(file_denom == 1000){
+    }
+    else if (file_denom == 1000)
+    {
         index = 7;
-    }  
+    }
 
     return index;
 }
@@ -56,7 +70,7 @@ bool CashRegister::LoadRegister(string file_name)
     while (std::getline(coins_file, line))
     {
         // Initialize the vector with the required number of elements
-        std::vector<Coin*> ret(8);
+        std::vector<Coin *> ret(8);
 
         Helper::splitString(line, coins_output, ",");
 
@@ -74,17 +88,15 @@ bool CashRegister::LoadRegister(string file_name)
 
                 // turns the values into enums for the denomination
                 Denomination denomination = Coin::coin_file_to_denomation(stoi(coins_output.at(0)));
-                 
+
                 // makes the index of the coins
                 int index_coin = coin_file_to_denomation(denomination);
-               
+
                 // makes new coin (the denomination, the value)
                 Coin *coin_ptr = new Coin(denomination, std::stoi(coins_output.at(1)));
-                 
+
                 // this line sets the Coin object pointed to by coin_ptr to the index_coin-th position of the coins vector using the at() function
                 this->coins.at(index_coin) = coin_ptr;
-                
-                
             }
             else
             {
@@ -103,22 +115,90 @@ bool CashRegister::LoadRegister(string file_name)
     return true;
 }
 
-
 // reference: chatgpt helped with this part
-void CashRegister::display_coins() {
+void CashRegister::display_coins()
+{
     cout << "Coins Summary" << std::endl;
     cout << "---------------" << std::endl;
     cout << "Denomination     |     Count" << std::endl;
     cout << "-----------------------------" << std::endl;
-    
-    for (const auto& coin : this->coins) {
+
+    for (const auto &coin : this->coins)
+    {
         string denom_str;
-        if (coin->denom % 100 != 0) {
+        if (coin->denom % 100 != 0)
+        {
             denom_str = std::to_string(coin->denom) + " Cents";
-        } else {
+        }
+        else
+        {
             denom_str = std::to_string(coin->denom / 100) + " Dollars";
         }
-        
+
         cout << std::left << std::setw(18) << denom_str << "| " << std::right << std::setw(9) << coin->count << std::endl;
     }
+}
+
+int CashRegister::TotalMoney()
+{
+    int total_money = 0;
+
+    for (Coin *coin : coins)
+    {
+        total_money += coin->denom * coin->count;
+    }
+
+    return total_money;
+}
+
+bool CashRegister::GetChange(int change)
+{   
+     bool can_do_payment = false;
+    // int total_money = 0;
+    // int user_money = stoi(userInput);
+
+    // total_money = TotalMoney();
+
+    // if (total_money <= 0){
+    //     std::cout << "Can not do purchase, no money left in register" << std::endl;
+    //     std::cout << "Your money will be returned and purchase will be canceled" << std::endl;
+    // } else {
+
+    //     std::cout << "Here's your change: " << std::to_string(user_money) << std::endl;
+    // }
+
+    
+    if (change < 0) {
+        // The user didn't give enough money
+        return false;
+    }
+    std::vector<int> valid_denoms = {1000, 500, 200, 100, 50, 20, 10, 5};
+    std::vector<int> change_counts(valid_denoms.size(), 0);
+    for (size_t i = 0; i < valid_denoms.size(); ++i) {
+        while (change >= valid_denoms[i] && coins[i]->count > 0) {
+            change -= valid_denoms[i];
+            coins[i]->decrementCount();
+            change_counts[i]++;
+        }
+    }
+    if (change > 0) {
+        // Cannot make exact change, return the money
+        for (size_t i = 0; i < valid_denoms.size(); ++i) {
+            while (change_counts[i] > 0) {
+                coins[i]->incrementCount();
+                change_counts[i]--;
+            }
+        }
+        std::cout << "Cannot make exact change, returning your money" << std::endl;
+    } else {
+        // Print the change
+        std::cout << "Here is your change: " << std::endl;
+        for (size_t i = 0; i < valid_denoms.size(); ++i) {
+            if (change_counts[i] > 0) {
+                std::cout << "$" << (valid_denoms[i] / 100) << " x " << change_counts[i] << std::endl;
+            }
+        }
+    }
+
+    return can_do_payment;
 }

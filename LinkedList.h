@@ -36,6 +36,8 @@ public:
     void BuyItem(string userInput, CashRegister cash_register);
 
     Node* getID(string index);
+
+    bool ValidUserInputForPurchase(std::string userInput);
 private:
     // the beginning of the list
     Node* head;

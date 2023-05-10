@@ -8,7 +8,7 @@ Coin::Coin()
 }
 
 // This is the constructer of the coin
-Coin::Coin(Denomination denom, unsigned count) {
+Coin::Coin(Denomination denom, int count) {
     this->denom = denom;
     this->count = count;
 
@@ -52,6 +52,19 @@ Denomination Coin::coin_file_to_denomation(unsigned file_denom)
     {
         denomination = TEN_DOLLARS;
     }
-    std::cout << denomination << std::endl;
+  
     return denomination;
+}
+
+void Coin::incrementCount()
+{
+    count++;
+}
+
+void Coin::decrementCount()
+{
+    if (count > 0)
+    {
+        count--;
+    }
 }

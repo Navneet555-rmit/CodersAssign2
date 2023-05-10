@@ -53,6 +53,10 @@ public:
 
     static std::string strip_spaces(std::string string);
 
+    // Reference 
+    //chatGPT with prompt: want it so that if the user types 200 I return the value $2.00 in c++
+    static std::string convert_cents_to_dollars(std::string userInput);
+
   
 
 };

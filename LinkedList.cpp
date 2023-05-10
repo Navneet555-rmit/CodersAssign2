@@ -201,6 +201,7 @@ int LinkedList::size()
     return length;
 }
 
+
 void LinkedList::BuyItem(string userInput, CashRegister cash_register)
 {
     Node *selected_node = nullptr;
@@ -245,22 +246,30 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                           << std::to_string(cash_owed)
                           << ":" << std::endl;
 
-                string userInput_change = Helper::readInput();
+                string userInput_given_money = Helper::readInput();
 
-                if (userInput_change.empty())
+                // Checks if empty
+                if (userInput_given_money.empty())
                 {
                     std::cout << "Purchase canceled, money is refunded" << std::endl;
                     gave_money = true;
                 }
-                else if (!Helper::isNumber(userInput_change))
+                // Checks if number
+                else if (!Helper::isNumber(userInput_given_money))
                 {
                     std::cout << "Please use a valid number" << std::endl;
-                } else if (!Helper::isValidDenom(userInput_change)) {
-                    std::cout << "Please use a valid denom" << std::endl;
                 }
+                // Checks if valid denom
+                else if (!Helper::isValidDenom(userInput_given_money))
+                {
+                    std::cout << "Error: " << Helper::convert_cents_to_dollars(userInput_given_money)
+                              << " is not a valid denomination of money. Please try again." << std::endl;
+                }
+                // Everything valid
                 else
                 {
-                    cash_owed = cash_owed - stoi(userInput_change);
+                    std::cout << "Testing" << std::endl;
+                    cash_owed = cash_owed - stoi(userInput_given_money);
                 }
 
                 // user validations to check if digit, valid denom etc etc
@@ -275,15 +284,17 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                 }
                 // Customer needs change back
                 else if (cash_owed < 0)
-                {
-                    std::cout << "Here is your " << selected_node->data->name << std::endl;
-                    std::cout << "Here is your change " << std::endl;
+                {   
+                    int change = cash_owed * (-1);
 
-                    // make function to deal with change and stuff
-                    // like getChange()
-                    // then that function can deal removing it from coin vector
-                    // if it cant get change, it will print out saying sorry no change and refund items
-                    // once everything is done, we finally remove the item quantity
+                    std::cout << "Here is your " << selected_node->data->name << std::endl;
+                    std::cout << "Here is your change: " << change << std::endl;
+
+                    if (cash_register.GetChange(change)) {
+
+                    } else {
+
+                    }
                     gave_money = true;
                 }
             }
