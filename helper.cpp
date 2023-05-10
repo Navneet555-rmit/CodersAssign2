@@ -59,7 +59,14 @@ void Helper::splitString(string s, vector<string>& tokens, string delimeter)
 string Helper::readInput()
 {
     string input;
-    std::getline(std::cin, input);
+
+    
+    if (!std::getline(std::cin, input))
+    {
+        std::cout << "End-of-file condition encountered, terminating the program" << std::endl;
+        std::exit(EXIT_SUCCESS);
+    }
+
     std::cout << std::endl;
 
     return input;

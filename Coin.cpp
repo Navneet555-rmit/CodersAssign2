@@ -12,7 +12,7 @@ Coin::Coin(Denomination denom, unsigned count) {
     this->denom = denom;
     this->count = count;
 
-    Coin::print();
+    //Coin::print();
 }
 
 void Coin::print(){
@@ -52,8 +52,6 @@ Denomination Coin::coin_file_to_denomation(unsigned file_denom)
     {
         denomination = TEN_DOLLARS;
     }
-
-    std::cout << "it do be working in coinssssss" << std::endl;
     std::cout << denomination << std::endl;
     return denomination;
 }

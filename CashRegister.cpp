@@ -1,13 +1,12 @@
 #include "CashRegister.h"
-#include "helper.h"
-#include "Coin.h"
+#include "LinkedList.h"
 #include <iomanip>
 
 using std::cout;
 CashRegister::CashRegister()
 {
     // stupid bullshit caused out of range segmentation cuz i didnt give it size AAAAAAAAAHHHHHHHH
-    // https://stackoverflow.com/questions/22067705/c-vector-stdout-of-range-error i love u
+    // reference: https://stackoverflow.com/questions/22067705/c-vector-stdout-of-range-error i love u
     this->coins.resize(8);
 }
 CashRegister::~CashRegister()

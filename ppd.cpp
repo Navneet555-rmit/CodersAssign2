@@ -91,7 +91,6 @@ int main(int argc, char **argv)
             return EXIT_FAILURE;
         }
 
-        
         cash_register->LoadRegister(argv[2]);
     }
 
@@ -107,6 +106,15 @@ int main(int argc, char **argv)
         }
         else if (input == "2")
         {
+            // Purchasing
+            std::cout << "Purchase Item" << std::endl;
+            std::cout << "-------------" << std::endl;
+            std::cout << "Please enter the id of the item you wish to purchase:" << std::endl;
+
+            // imma do the user validation stuff later (similar to option 5)
+            string userInput = Helper::readInput();
+
+            linked_list->BuyItem(userInput, *cash_register);
         }
         else if (input == "3")
         {
@@ -120,16 +128,18 @@ int main(int argc, char **argv)
 
             string userInput = Helper::readInput();
 
-            if (Helper::checkUserInputForRemoveItem(userInput))
+            if (!cin.eof())
             {
-                linked_list->remove_index(userInput);
+                if (Helper::checkUserInputForRemoveItem(userInput))
+                {
+                    linked_list->remove_index(userInput);
+                }
             }
         }
         else if (input == "6")
         {
             cash_register->display_coins();
         }
-        
     }
 
     delete linked_list;

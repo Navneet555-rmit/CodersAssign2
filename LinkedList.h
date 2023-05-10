@@ -13,7 +13,7 @@
 #include <iostream>
 #include <string.h>
 #include <random>
-
+#include "CashRegister.h"
 using std::string;
 using std::vector;
 
@@ -31,8 +31,11 @@ public:
     void remove_index(string index);
 
     // Inserting stock from file reference: https://github.com/Py-Contributors/AlgorithmsAndDataStructure/blob/master/C%2B%2B/Data%20Structure/Linked%20List/Menu_Driven_Linked_List.cpp
-    void insert_stock_from_file(string filepath);
     void DisplayItems();
+
+    void BuyItem(string userInput, CashRegister cash_register);
+
+    Node* getID(string index);
 private:
     // the beginning of the list
     Node* head;
@@ -42,5 +45,4 @@ private:
 };
 
 #endif  // LINKEDLIST_H
-
 
