@@ -36,8 +36,6 @@ int CashRegister::coin_file_to_denomation(Denomination file_denom) {
         index = 7;
     }  
 
-    std::cout <<  "it do be working in coins in cash register"  << std::endl;
-    std::cout << index << std::endl;
     return index;
 }
 
@@ -51,7 +49,7 @@ bool CashRegister::LoadRegister(string file_name)
     if (!coins_file)
     {
         std::cout << file_name << " : "
-                  << "fail to open file" << std::endl;
+                  << "failed to open file" << std::endl;
         return false;
     }
 
@@ -71,10 +69,6 @@ bool CashRegister::LoadRegister(string file_name)
             // Checks if the denom and value are numbers
             if (Helper::isNumber(coin_value) && Helper::isNumber(coin_denom))
             {
-                if (!this->InsertCash(std::stoi(coins_output[0]), std::stoi(coins_output[1])))
-                {
-                }
-
                 // the denom values are stripped of spaces
                 coins_output[0] = Helper::strip_spaces(coins_output.at(0));
 
@@ -109,18 +103,6 @@ bool CashRegister::LoadRegister(string file_name)
     return true;
 }
 
-bool CashRegister::InsertCash(int denomination, int amount)
-{
-    for (int i = 0; i < 8; i++)
-    {
-        if (denominators[i] == denomination)
-        {
-            amounts[i] += amount;
-            return true;
-        }
-    }
-    return false;
-}
 
 // reference: chatgpt helped with this part
 void CashRegister::display_coins() {

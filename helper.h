@@ -49,6 +49,8 @@ public:
 
     static bool checkUserInputForRemoveItem(std::string userInput);
 
+    static bool isValidDenom(std::string userInput);
+
     static std::string strip_spaces(std::string string);
 
   

@@ -252,13 +252,20 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                     std::cout << "Purchase canceled, money is refunded" << std::endl;
                     gave_money = true;
                 }
-
-                cash_owed = cash_owed - stoi(userInput_change);
+                else if (!Helper::isNumber(userInput_change))
+                {
+                    std::cout << "Please use a valid number" << std::endl;
+                } else if (!Helper::isValidDenom(userInput_change)) {
+                    std::cout << "Please use a valid denom" << std::endl;
+                }
+                else
+                {
+                    cash_owed = cash_owed - stoi(userInput_change);
+                }
 
                 // user validations to check if digit, valid denom etc etc
                 // bool check if valid denom, if false Error: $3.00 is not a valid denomination of money. Please try again
                 // bool check if is digit, if false Error: hi is not a valid number
-                
 
                 // Handed direct change
                 if (cash_owed == 0)
