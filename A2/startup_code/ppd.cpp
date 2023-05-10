@@ -69,6 +69,8 @@ void Menu(){
 
         if (input == "1")
         {
+           inventory.DisplayInventory();
+           Helper::waitForEnter();
            
            
         }

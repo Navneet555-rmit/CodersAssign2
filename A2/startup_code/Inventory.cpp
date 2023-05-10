@@ -44,6 +44,37 @@ bool Inventory::LoadItems(string file_name){
 
         return true;
 }
+void Inventory::DisplayInventory(){
+    std::cout 
+    << "Items Menu\n" 
+    << "----------\n" 
+    << std::left << std::setw(40) << "ID   |Name"
+    << std::left << std::setw(15) <<"| Available"
+    << "| Price \n"
+     << "---------------------------------------------------------------" 
+    << std::endl;
+ 
+    Node* current = this->items.Peek();
+ 
+    while (current) {
+        Stock *data = current->data;
+ 
+        int cents = data->price.cents;
+        std::string cents_str = std::to_string(cents);
+        if (cents < 10) {
+            cents_str.insert(0, "0");
+        }
+ 
+        std::cout 
+        << std::left << std::setw(40) << data->id +"|"+ data->name
+        << std::left << std::setw(15) <<"|"+std::to_string(data->on_hand)
+        << "|$ "+std::to_string(data->price.dollars) +"."+cents_str
+        << std::endl;
+ 
+ 
+        current = current->next;
+    }
+}
 
 bool Inventory::AddItem(std::vector<std::string> data){
 

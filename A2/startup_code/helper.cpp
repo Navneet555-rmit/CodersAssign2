@@ -10,6 +10,10 @@ void Helper::printInvalidInput()
     std::cout << "Invalid input.\n" << std::endl;
 }
 
+void Helper::waitForEnter(){
+    while (Helper::readInput() != ""){};
+}
+
 bool Helper::isNumber(string s)
 {
     string::const_iterator it = s.begin();
