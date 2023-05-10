@@ -105,7 +105,7 @@ void LinkedList::remove_index(string index)
 
     Node *current = this->head;
     Node *prev = nullptr;
-    bool notFound = false;
+    bool was_found = true;
     size_t counter_remove = 0;
 
     if (this->head == nullptr)
@@ -115,8 +115,7 @@ void LinkedList::remove_index(string index)
     }
 
     // Going through the node until the ID is found
-    // Errors here - Issues in loop when theres an item that doesn't exist
-    while (counter_remove < this->count && current->data->id != index && !notFound)
+    while (counter_remove < this->count && current->data->id != index && was_found)
     {
         prev = current;
         current = current->next;
@@ -126,16 +125,15 @@ void LinkedList::remove_index(string index)
             std::cout << "ID does not exist" << std::endl;
 
             current = nullptr;
-            notFound = true;
+            was_found = false;
         }
 
         counter_remove = counter_remove + 1;
        
     }
 
-    if (!notFound)
+    if (was_found)
     {
-        std::cout << "A" << std::endl;
         // If the node is in the beginning
         if (prev == nullptr)
         {
@@ -156,9 +154,6 @@ void LinkedList::remove_index(string index)
         }
     }
    
-    // Delete children and then parent
-    //delete current->data;
-    //delete current;
 }
 
 void LinkedList::DisplayItems()
@@ -253,6 +248,10 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                           << ":" << std::endl;
 
                 string userInput_change = Helper::readInput();
+                
+                if (userInput == "") {
+                    std::cout << "Purchase canceled, money is refunded" << std::endl;
+                }
 
                 // user validations to check if digit, valid denom etc etc
                 // bool check if valid denom, if false Error: $3.00 is not a valid denomination of money. Please try again
