@@ -94,55 +94,49 @@ void Menu(){
                 Helper::splitString(itemName, tokens, ".");
                 if (tokens.size() == 0) {
                     success = true;
-                    cout << "Cancelling \"add item\" at user's request.\n"; 
-                    cout << "The task Add Item failed to run successfully.\n";
+                    Helper::cancelAddTask();
                 } else if (itemName.length() > NAMELEN) {
-                    cout << "Error: line entered was too long. Please try again.\n";
+                    Helper::printLongInput();
                 } else {
                     cout << "Enter the item description: ";
                     string itemDesc = Helper::readInput();
                     Helper::splitString(itemDesc, tokens, ".");
                     if (tokens.size() == 0) {
                         success = true;
-                        cout << "Cancelling \"add item\" at user's request.\n"; 
-                        cout << "The task Add Item failed to run successfully.\n";
+                        Helper::cancelAddTask();
                     } else if (itemDesc.length() > DESCLEN) {
-                        cout << "Error: line entered was too long. Please try again.\n";
+                        Helper::printLongInput();
                     } else {
                         bool priceSuccess = false;
                         while (priceSuccess == false) {
                             cout << "Enter the item price: ";
-                            string inputPrice = Helper::readInput();
-                            Helper::splitString(inputPrice, tokens, ".");
+                            string itemPrice = Helper::readInput();
+                            Helper::splitString(itemPrice, tokens, ".");
                             if (tokens.size() == 0) {
                                 priceSuccess = true;
                                 success = true;
-                                cout << "Cancelling \"add item\" at user's request.\n"; 
-                                cout << "The task Add Item failed to run successfully.\n";
+                                Helper::cancelAddTask();
                             } else if (tokens.size() == 2) {
                                 if (Helper::isNumber(tokens[0]) == true && 
                                 Helper::isNumber(tokens[1]) == true) {
                                     if (stoi(tokens[1]) % 5 == 0) {
-                                        vector<string> data = {};
-                                        data.push_back(ID);
-                                        data.push_back(itemName);
-                                        data.push_back(itemDesc);
-                                        data.push_back(inputPrice);
-                                        data.push_back(std::to_string(DEFAULT_STOCK_LEVEL));
+                                        vector<string> data = Helper::createVector(
+                                        ID, itemName, itemDesc, itemPrice);
                                         inventory.AddItem(data);
-                                        cout << "This item " << "\"" << itemName << " - " <<
-                                        itemDesc << "\" has now been added to the menu.\n";
+                                        cout << "This item " << "\"" << itemName
+                                        << " - " << itemDesc << "\" has now " <<
+                                        "been added to the menu.\n";
                                         priceSuccess = true;
                                         success = true;
                                     } else {
-                                        cout << "Error: the cents need to be a multiple of 5.\n";
+                                        Helper::printCentsNotMultipleOf5();
                                     }
 
                                 } else {
-                                    cout << "Error: the price is not valid.\n";
+                                    Helper::printInvalidPrice();
                                 }
                             } else {
-                                cout << "Error: the price is not valid.\n";
+                                Helper::printInvalidPrice();
                             }
                         }
                     }

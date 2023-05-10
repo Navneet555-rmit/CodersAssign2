@@ -44,7 +44,11 @@ public:
     static std::string readInput();
     static void waitForEnter(); 
     static void printInvalidInput();
-
+    static void printInvalidPrice();
+    static void printCentsNotMultipleOf5();
+    static void cancelAddTask();
+    static void printLongInput();
+    static std::vector<std::string> createVector(std::string id, std::string name, std::string desc, std::string price);
     
 };
 #endif
