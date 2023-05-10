@@ -104,6 +104,54 @@ bool Inventory::AddItem(std::vector<std::string> data){
 
 }
 
+string Inventory::getNextID() {
+    Node* current = this->items.Peek();
+    std::string currentItem = current->data->id;
+    std::string nextItem = "";
+    int currentID = std::stoi(currentItem.substr(1));
+    int nextID = 0;
+    while (current->next != NULL) {
+        current = current->next;
+        nextItem = current->data->id;
+        nextID = std::stoi(nextItem.substr(1));
+        if (nextID > currentID) {
+            currentID = nextID;
+            currentItem = nextItem;
+        }
+    }
+    currentID += 1;
+    std::string newID = "I" + std::to_string(currentID);
+    int numOfDigits = 0;
+    while (currentID != 0) {
+        currentID = currentID / 10;
+        numOfDigits += 1;
+    }
+    int i = 1;
+    while (i != IDLEN-numOfDigits) {
+        newID.insert(1, "0");
+        i += 1;
+    }
+    return newID;
+}
+
+int Inventory::getPosition(Stock* item) {
+    int index = 0;
+    Node* current = this->items.Peek();
+    std::string itemName = item->name;
+    std::string currentItemName = current->data->name;
+    itemName[0] = std::toupper(itemName[0]);
+    currentItemName[0] = std::toupper(currentItemName[0]);
+    // std::cout << current->data->name << std::endl;
+    while (current->next != nullptr && currentItemName < itemName) {
+        current = current->next;
+        currentItemName = current->data->name;
+        currentItemName[0] = std::toupper(currentItemName[0]);
+        // std::cout << current->data->name << std::endl;
+        index += 1;
+    }
+    return index;
+}
+
 
 
 

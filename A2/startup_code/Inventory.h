@@ -20,6 +20,8 @@ class Inventory{
         bool LoadItems(string file_name);
         bool AddItem(std::vector<std::string> data);
         void DisplayInventory();
+        string getNextID();
+        int getPosition(Stock* item);
 
 };
 

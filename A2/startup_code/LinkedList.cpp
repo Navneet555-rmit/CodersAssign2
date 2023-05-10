@@ -26,29 +26,49 @@ LinkedList::~LinkedList(){
 bool LinkedList::Insert(Stock* new_stock){
 
 
-    Node  *new_node = new Node();
+    Node *new_node = new Node();
     new_node->data = new_stock;
 
 
     Node *current = head;
     Node *prev = nullptr;
 
-    while (current != nullptr && current->data->name < new_stock->name) {
-        prev = current;
-        current = current->next;
-    }
-
-    if (prev == nullptr)
-    {
+    if (current == nullptr) {
         new_node->next = head;
         head = new_node;
-    }
-    else
-    {
-        prev->next = new_node;
-        new_node->next = current;
-    }
+    } else {
+        std::string stockName = new_stock->name;
+        std::string currentStockName = current->data->name;
+        transform(stockName.begin(), stockName.end(), 
+        stockName.begin(), ::toupper);
+        transform(currentStockName.begin(), currentStockName.end(), 
+        currentStockName.begin(), ::toupper);
+        // std::cout << stockName << std::endl;
+        // std::cout << currentStockName << std::endl;
+        while (current->next != nullptr && currentStockName < stockName) {
+            prev = current;
+            current = current->next;
+            currentStockName = current->data->name;
+            transform(currentStockName.begin(), currentStockName.end(), 
+            currentStockName.begin(), ::toupper);
+            // std::cout << stockName << " is greater than " << currentStockName << std::endl;
+        }
 
+        if (prev == nullptr)
+        {
+            new_node->next = head;
+            head = new_node;
+        }
+
+        else if (stockName > currentStockName) {
+            current->next = new_node;
+            new_node->next = nullptr;
+        }
+        else {
+            prev->next = new_node;
+            new_node->next = current;
+        }
+    }
     count += 1;
     return true;
 }
