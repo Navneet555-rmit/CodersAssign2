@@ -1,11 +1,11 @@
 #include "CashRegister.h"
 #include "LinkedList.h"
 #include <iomanip>
+#include <algorithm>
 
 using std::cout;
 CashRegister::CashRegister()
 {
-    // stupid bullshit caused out of range segmentation cuz i didnt give it size AAAAAAAAAHHHHHHHH
     // reference: https://stackoverflow.com/questions/22067705/c-vector-stdout-of-range-error i love u
     this->coins.resize(8);
 }
@@ -151,79 +151,136 @@ int CashRegister::TotalMoney()
     return total_money;
 }
 
-bool CashRegister::GetChange(int change)
-{   
-     bool can_do_payment = false;
-    // int total_money = 0;
-    // int user_money = stoi(userInput);
-
-    // total_money = TotalMoney();
-
-    // if (total_money <= 0){
-    //     std::cout << "Can not do purchase, no money left in register" << std::endl;
-    //     std::cout << "Your money will be returned and purchase will be canceled" << std::endl;
-    // } else {
-
-    //     std::cout << "Here's your change: " << std::to_string(user_money) << std::endl;
-    // }
-
-    
-    if (change < 0) {
-        // The user didn't give enough money
-        return false;
-    }
-    std::vector<int> valid_denoms = {1000, 500, 200, 100, 50, 20, 10, 5};
-    std::vector<int> change_counts(valid_denoms.size(), 0);
-    for (size_t i = 0; i < valid_denoms.size(); ++i) {
-        while (change >= valid_denoms[i] && coins[i]->count > 0) {
-            change -= valid_denoms[i];
+void CashRegister::RemoveCount(int index)
+{
+    for (size_t i = 0; i < coins.size(); ++i)
+    {
+        if (coins[i]->denom == index)
+        {
             coins[i]->decrementCount();
-            change_counts[i]++;
+
         }
     }
-    if (change > 0) {
-        // Cannot make exact change, return the money
-        for (size_t i = 0; i < valid_denoms.size(); ++i) {
-            while (change_counts[i] > 0) {
-                coins[i]->incrementCount();
-                change_counts[i]--;
+}
+
+bool CashRegister::GetChange(int change)
+{
+    bool can_do_payment = false;
+    int total_money = 0;
+
+    total_money = TotalMoney();
+
+    if (total_money <= 0)
+    {
+        std::cout << "Can not do purchase, no money left in register" << std::endl;
+        std::cout << "Your money will be returned and purchase will be canceled" << std::endl;
+        can_do_payment = false;
+    }
+    else
+    {
+        // Getting valid denoms
+        std::vector<int> valid_denoms;
+        for (size_t i = 0; i < coins.size(); ++i)
+        {
+            if (coins[i]->count > 0 && coins[i]->denom > 0)
+            {
+                valid_denoms.push_back(coins[i]->denom);
             }
         }
-        std::cout << "Cannot make exact change, returning your money" << std::endl;
-    } else {
-        // Print the change
-        std::cout << "Here is your change: " << std::endl;
-        for (size_t i = 0; i < valid_denoms.size(); ++i) {
-            if (change_counts[i] > 0) {
-                std::cout << "$" << (valid_denoms[i] / 100) << " x " << change_counts[i] << std::endl;
+
+        // Sorting them
+        std::sort(valid_denoms.rbegin(), valid_denoms.rend());
+
+        // Tries to get change the first time e.g 500 x 1
+        std::vector<int> change_counts(valid_denoms.size(), 0);
+        for (size_t i = 0; i < valid_denoms.size(); ++i)
+        {
+            while (change >= valid_denoms[i])
+            {
+                change -= valid_denoms[i];
+                RemoveCount(valid_denoms[i]);
+
+                change_counts[i]++;
             }
+        }
+        if (change > 0)
+        {
+            // Tries to get change the first time e.g 500 x 1   100 x 1
+            for (size_t i = 0; i < valid_denoms.size(); ++i)
+            {
+                while (change >= valid_denoms[i])
+                {
+                    change -= valid_denoms[i];
+                    RemoveCount(valid_denoms[i]);
+                    change_counts[i]++;
+                }
+            }
+
+            // If can't get change
+            if (change > 0)
+            {
+                std::cout << "Cannot make exact change, returning your money" << std::endl;
+                can_do_payment = false;
+            }
+            else
+            {
+                // Print the change
+                std::cout << "Here is your change: " << std::endl;
+                for (size_t i = 0; i < valid_denoms.size(); ++i)
+                {
+                    if (change_counts[i] > 0)
+                    {
+                        std::cout << "$" << (valid_denoms[i] / 100) << " x " << change_counts[i] << std::endl;
+                    }
+                }
+
+                can_do_payment = true;
+            }
+        }
+        else
+        {
+            // Print the change
+            std::cout << "Here is your change: " << std::endl;
+            for (size_t i = 0; i < valid_denoms.size(); ++i)
+            {
+                if (change_counts[i] > 0)
+                {
+                    std::cout << "$" << (valid_denoms[i] / 100) << " x " << change_counts[i] << std::endl;
+                }
+            }
+
+            can_do_payment = true;
         }
     }
 
     return can_do_payment;
 }
 
-void CashRegister::saveRegister(string coinFile) {
+void CashRegister::saveRegister(string coinFile)
+{
     std::ofstream file;
+
+     // open coin file
     file.open(coinFile);
- 
+
+    // for each coin, write the denominator and count to the file
     for (const auto &coin : this->coins)
     {
         file << coin->denom << "," << coin->count << std::endl;
     }
- 
+
+    // close file
     file.close();
 }
 
-void CashRegister::resetCoin() {
+void CashRegister::resetCoin()
+{
     std::ofstream file;
 
-     for (size_t i = 0; i < coins.size(); i++) {
+    for (size_t i = 0; i < coins.size(); i++)
+    {
         coins[i]->count = DEFAULT_COIN_COUNT;
-        
     }
 
     std::cout << "All coins have been reset to the default level of " << DEFAULT_COIN_COUNT << std::endl;
-
-
 }

@@ -38,19 +38,22 @@ LinkedList::~LinkedList()
 bool LinkedList::insert(std::vector<std::string> data)
 {
 
+    // split price string
     std::vector<std::string> price_tokens = {};
     Helper::splitString(data[3], price_tokens, ".");
 
+    // if there aren't two tokens, then there is a price error
     if (price_tokens.size() != 2)
     {
         std::cout << "Price Error" << std::endl;
         return false;
     }
-
+    // initialize price, set dollars and cents
     Price price = *(new Price());
     price.dollars = std::stoi(price_tokens[0]);
     price.cents = std::stoi(price_tokens[1]);
 
+    // initialize stock, add data to new stock
     Stock *new_stock = new Stock();
     new_stock->id = data[0];
     new_stock->name = data[1];
@@ -58,23 +61,33 @@ bool LinkedList::insert(std::vector<std::string> data)
     new_stock->on_hand = std::stoi(data[4]);
     new_stock->price = price;
 
+    // create new node containing data for new stock
     Node *new_node = new Node();
     new_node->data = new_stock;
 
-
+    // initialize variables
     Node *current = head;
     Node *prev = nullptr;
 
+    // if current is a null pointer, then make new stock the first stock
     if (current == nullptr) {
         new_node->next = head;
         head = new_node;
     } else {
+        // initialize variables
         std::string stockName = new_stock->name;
         std::string currentStockName = current->data->name;
+        // transform stock name to be all upper case letters
         transform(stockName.begin(), stockName.end(), 
         stockName.begin(), ::toupper);
+        // transform current stock name to be all upper case letters
         transform(currentStockName.begin(), currentStockName.end(), 
         currentStockName.begin(), ::toupper);
+       /*
+        * while the new stock name is greater than the current stock name
+        * and the next node in the linked list is not a null pointer, go
+        * through the linked list
+        */
         while (current->next != nullptr && currentStockName < stockName) {
             prev = current;
             current = current->next;
@@ -82,16 +95,21 @@ bool LinkedList::insert(std::vector<std::string> data)
             transform(currentStockName.begin(), currentStockName.end(), 
             currentStockName.begin(), ::toupper);
         }
-
+        /*
+        * if stock name is still greater than current stock name, add to back
+        * of linked list
+        */ 
         if (stockName > currentStockName) {
             current->next = new_node;
             new_node->next = nullptr;
         }
+        // else, add at current positiion and point to next node
         else {
             prev->next = new_node;
             new_node->next = current;
         }
     }
+    // increment count
     count += 1;
     return true;
 }
@@ -213,7 +231,6 @@ int LinkedList::size()
     return length;
 }
 
-
 void LinkedList::BuyItem(string userInput, CashRegister cash_register)
 {
     Node *selected_node = nullptr;
@@ -258,7 +275,7 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
             {
                 std::cout << "You still need to give us "
                           << std::to_string(cash_owed)
-                          << ": ";
+                          << ":" << std::endl;
 
                 string userInput_given_money = Helper::readInput();
 
@@ -282,13 +299,8 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                 // Everything valid
                 else
                 {
-                    std::cout << "Testing" << std::endl;
                     cash_owed = cash_owed - stoi(userInput_given_money);
                 }
-
-                // user validations to check if digit, valid denom etc etc
-                // bool check if valid denom, if false Error: $3.00 is not a valid denomination of money. Please try again
-                // bool check if is digit, if false Error: hi is not a valid number
 
                 // Handed direct change
                 if (cash_owed == 0)
@@ -298,16 +310,17 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                 }
                 // Customer needs change back
                 else if (cash_owed < 0)
-                {   
+                {
                     int change = cash_owed * (-1);
 
                     std::cout << "Here is your " << selected_node->data->name << std::endl;
-                    std::cout << "Here is your change: " << change << std::endl;
 
-                    if (cash_register.GetChange(change)) {
-
-                    } else {
-
+                    if (cash_register.GetChange(change))
+                    {
+                        selected_node->data->on_hand = selected_node->data->on_hand - 1;
+                    }
+                    else
+                    {
                     }
                     gave_money = true;
                 }
@@ -348,7 +361,8 @@ Node *LinkedList::getID(string index)
     return ret_item;
 }
 
-void LinkedList::resetStock() {
+void LinkedList::resetStock()
+{
     Node *current = head;
 
     while (current)
@@ -359,15 +373,19 @@ void LinkedList::resetStock() {
 }
 
 string LinkedList::getNextID() {
+    // initialize variables
     Node* current = head;
     std::string newID = "";
+    // if there is no node in the linked list, set new id to 'I0001'
     if (current == nullptr) {
         newID = "I0001";
     } else {
+        // initialize variables
         std::string currentItem = current->data->id;
         std::string nextItem = "";
         int currentID = std::stoi(currentItem.substr(1));
         int nextID = 0;
+        // go through each node and find the id with the highest number
         while (current->next != NULL) {
             current = current->next;
             nextItem = current->data->id;
@@ -377,14 +395,24 @@ string LinkedList::getNextID() {
                 currentItem = nextItem;
             }
         }
+        // increment the highest id we found
         currentID += 1;
+        // create string from id
         newID = "I" + std::to_string(currentID);
         int numOfDigits = 0;
+        /*
+        * check how many digits currentID has by dividing the integer by 10
+        * until currentID equals 0
+        */ 
         while (currentID != 0) {
             currentID = currentID / 10;
             numOfDigits += 1;
         }
         int i = 1;
+        /*
+        * keep inserting 0 after "I" depending on how many digits currentID has
+        * to a maximum amount of 3
+        */
         while (i != IDLEN-numOfDigits) {
             newID.insert(1, "0");
             i += 1;
@@ -396,11 +424,14 @@ string LinkedList::getNextID() {
 }
 
 void LinkedList::saveStock(string stockFile) {
+    // initialize variables
     Node* current = head;
  
     std::ofstream file;
+    // open stock file
     file.open(stockFile);
  
+    // for each item, write the data of the item to the file
     while (current)
     {
         file << current->data->id<<"|"<<current->data->name<<
@@ -408,96 +439,120 @@ void LinkedList::saveStock(string stockFile) {
         <<current->data->price.cents<<"|"<<current->data->on_hand<<"\n";
         current = current->next;
     }
- 
+    
+    // close stock file
     file.close();
 }
 
-void LinkedList::addStock(LinkedList *linked_list) {
+void LinkedList::addStock(LinkedList *linked_list)
+{
     // Get the next ID for the new item
     string ID = linked_list->getNextID();
     std::cout << "The id of the new stock will be: " << ID << std::endl;
     // Initalize variables
     bool success = false;
 
-    while (!success) {
+    while (!success)
+    {
         // Get input from user
         std::cout << "Enter the item name: ";
         string itemName = Helper::readInput();
         vector<string> tokens = {};
         Helper::splitString(itemName, tokens, ".");
         // If user input is whitespace, cancel add task
-        if (tokens.size() == 0) {
+        if (tokens.size() == 0)
+        {
             success = true;
             Helper::cancelAddTask();
-       /*
-        * If length of input is above maximum length,
-        * alert user that the input is too long
-        */ 
-        } else if (itemName.length() > NAMELEN) {
+            /*
+             * If length of input is above maximum length,
+             * alert user that the input is too long
+             */
+        }
+        else if (itemName.length() > NAMELEN)
+        {
             Helper::printLongInput();
-        } else {
+        }
+        else
+        {
             // Get input from user
             std::cout << "Enter the item description: ";
             string itemDesc = Helper::readInput();
             Helper::splitString(itemDesc, tokens, ".");
             // If user input is whitespace, cancel add task
-            if (tokens.size() == 0) {
+            if (tokens.size() == 0)
+            {
                 success = true;
                 Helper::cancelAddTask();
-           /*
-            * If length of input is above maximum length,
-            * alert user that the input is too long
-            */ 
-            } else if (itemDesc.length() > DESCLEN) {
+                /*
+                 * If length of input is above maximum length,
+                 * alert user that the input is too long
+                 */
+            }
+            else if (itemDesc.length() > DESCLEN)
+            {
                 Helper::printLongInput();
-            } else {
+            }
+            else
+            {
                 bool priceSuccess = false;
-                while (priceSuccess == false) {
+                while (priceSuccess == false)
+                {
                     // Get input from user
                     std::cout << "Enter the item price: ";
                     string itemPrice = Helper::readInput();
                     Helper::splitString(itemPrice, tokens, ".");
                     // If user input is whitespace, cancel add task
-                    if (tokens.size() == 0) {
+                    if (tokens.size() == 0)
+                    {
                         priceSuccess = true;
                         success = true;
                         Helper::cancelAddTask();
-                    // Check if input has two strings separated by "."
-                    } else if (tokens.size() == 2) {
+                        // Check if input has two strings separated by "."
+                    }
+                    else if (tokens.size() == 2)
+                    {
                         // Check if the two strings are numbers
-                        if (Helper::isNumber(tokens[0]) == true && 
-                        Helper::isNumber(tokens[1]) == true) {
+                        if (Helper::isNumber(tokens[0]) == true &&
+                            Helper::isNumber(tokens[1]) == true)
+                        {
                             // Check if the second string is divisible by 5
-                            if (stoi(tokens[1]) % 5 == 0) {
+                            if (stoi(tokens[1]) % 5 == 0)
+                            {
                                 // Create vector containing new item's details
                                 vector<string> data = Helper::createVector(
-                                ID, itemName, itemDesc, itemPrice);
+                                    ID, itemName, itemDesc, itemPrice);
                                 // Add item to inventory
                                 linked_list->insert(data);
-                                std::cout << "This item " << "\"" << itemName
-                                << " - " << itemDesc << "\" has now been " <<
-                                "added to the menu.\n";
+                                std::cout << "This item "
+                                          << "\"" << itemName
+                                          << " - " << itemDesc << "\" has now been "
+                                          << "added to the menu.\n";
                                 priceSuccess = true;
                                 success = true;
-                            } else {
+                            }
+                            else
+                            {
                                 /*
-                                * If second string (cents) is not divisible
-                                * by 5, alert user
-                                */ 
+                                 * If second string (cents) is not divisible
+                                 * by 5, alert user
+                                 */
                                 Helper::printCentsNotMultipleOf5();
                             }
-                        // If either string is not a number, alert user
-                        } else {
+                            // If either string is not a number, alert user
+                        }
+                        else
+                        {
                             Helper::printInvalidPrice();
                         }
-                    // If input is not two strings separated by ".", alert user
-                    } else {
+                        // If input is not two strings separated by ".", alert user
+                    }
+                    else
+                    {
                         Helper::printInvalidPrice();
                     }
                 }
             }
-                    
         }
-                
     }
 }

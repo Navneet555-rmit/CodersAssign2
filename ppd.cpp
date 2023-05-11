@@ -20,8 +20,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-std::map<int, Coin> cash_register;
-
 /**
  * manages the running of the program, initialises data structures, loads
  * data, display the main menu, and handles the processing of options.
@@ -105,6 +103,7 @@ int main(int argc, char **argv)
         string input = Helper::readInput();
         Helper::splitString(input, tokens, " ");
 
+          // if user hits enter on empty line, quit program without saving
         if (tokens.size() == 0) {
             quitProgram = true;
         }
@@ -120,7 +119,6 @@ int main(int argc, char **argv)
             cout << "-------------" << endl;
             cout << "Please enter the id of the item you wish to purchase: ";
 
-            // imma do the user validation stuff later (similar to option 5)
             string userInput = Helper::readInput();
 
             linked_list->BuyItem(userInput, *cash_register);
@@ -165,6 +163,7 @@ int main(int argc, char **argv)
         }
 
         else if (tokens.size() == 1 && tokens[0] == "9") {
+            // quit program without saving
             quitProgram = true;
         }
         else {

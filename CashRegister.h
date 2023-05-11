@@ -18,7 +18,6 @@ class CashRegister{
       
 
         // Where I store the coins
-        // i hate u
         std::vector<Coin*> coins;
 
     public:
@@ -44,6 +43,8 @@ class CashRegister{
         void saveRegister(string coinFile);
 
         void resetCoin();
+
+        void RemoveCount(int index);
 };
 
 #endif 
