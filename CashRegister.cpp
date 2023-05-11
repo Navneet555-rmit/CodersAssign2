@@ -11,6 +11,7 @@ CashRegister::CashRegister()
 }
 CashRegister::~CashRegister()
 {
+    
 }
 
 void CashRegister::Load_file_coins(string filepath)
@@ -97,6 +98,7 @@ bool CashRegister::LoadRegister(string file_name)
 
                 // this line sets the Coin object pointed to by coin_ptr to the index_coin-th position of the coins vector using the at() function
                 this->coins.at(index_coin) = coin_ptr;
+
             }
             else
             {
@@ -112,6 +114,8 @@ bool CashRegister::LoadRegister(string file_name)
             return false;
         }
     }
+
+    
     return true;
 }
 
@@ -230,7 +234,7 @@ bool CashRegister::GetChange(int change)
                 {
                     if (change_counts[i] > 0)
                     {
-                        std::cout << "$" << (valid_denoms[i] / 100) << " x " << change_counts[i] << std::endl;
+                        std::cout  << Helper::convert_cents_to_dollars(std::to_string(valid_denoms[i])) << " x " << change_counts[i] << std::endl;
                     }
                 }
 
@@ -245,7 +249,7 @@ bool CashRegister::GetChange(int change)
             {
                 if (change_counts[i] > 0)
                 {
-                    std::cout << "$" << (valid_denoms[i] / 100) << " x " << change_counts[i] << std::endl;
+                    std::cout <<  Helper::convert_cents_to_dollars(std::to_string(valid_denoms[i])) << " x " << change_counts[i] << std::endl;
                 }
             }
 

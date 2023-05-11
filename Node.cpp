@@ -1,8 +1,9 @@
 #include "Node.h"
 
 Node::Node(){
-    // TODO
+    this->data = nullptr;
+    this->next = nullptr;
 };
 Node::~Node(){
-    // TODO
+      delete this->data;  
 };

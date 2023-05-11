@@ -29,6 +29,9 @@ LinkedList::~LinkedList()
             Node *toDelete = head;
             head = head->next;
 
+            delete toDelete->data; // Free memory allocated for Stock object
+            toDelete->data = nullptr;
+
             delete toDelete;
             toDelete = nullptr;
         }
@@ -49,7 +52,7 @@ bool LinkedList::insert(std::vector<std::string> data)
         return false;
     }
     // initialize price, set dollars and cents
-    Price price = *(new Price());
+    Price price;
     price.dollars = std::stoi(price_tokens[0]);
     price.cents = std::stoi(price_tokens[1]);
 
@@ -111,6 +114,9 @@ bool LinkedList::insert(std::vector<std::string> data)
     }
     // increment count
     count += 1;
+
+  
+  
     return true;
 }
 
@@ -306,6 +312,7 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
                 if (cash_owed == 0)
                 {
                     std::cout << "Here is your " << selected_node->data->name << std::endl;
+                    selected_node->data->on_hand = selected_node->data->on_hand - 1;
                     gave_money = true;
                 }
                 // Customer needs change back
@@ -554,5 +561,7 @@ void LinkedList::addStock(LinkedList *linked_list)
                 }
             }
         }
+
+     
     }
 }

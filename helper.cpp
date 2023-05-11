@@ -69,6 +69,8 @@ string Helper::readInput()
         std::exit(EXIT_SUCCESS);
     }
 
+    input = strip_spaces(input);
+
     std::cout << std::endl;
 
     return input;
