@@ -15,6 +15,8 @@
 #include "CashRegister.h"
 
 using std::cin;
+using std::cout;
+using std::endl;
 using std::string;
 using std::vector;
 
@@ -27,17 +29,17 @@ std::map<int, Coin> cash_register;
  **/
 
 const string menuText =
-    "Main Menu\n"
-    "   1.Display Items\n"
-    "   2.Purchase Items\n"
-    "   3.Save and                Exit\n"
+    "\nMain Menu\n"
+    "        1. Display Items\n"
+    "        2. Purchase Items\n"
+    "        3. Save and Exit\n"
     "Administrator-Only Menu:\n"
-    "   4.Add Item\n"
-    "   5.Remove Item\n"
-    "   6.Display Coins\n"
-    "   7.Reset Stock\n"
-    "   8.Reset Coins\n"
-    "   9.Abort Program";
+    "        4. Add Item\n"
+    "        5. Remove Item\n"
+    "        6. Display Coins\n"
+    "        7. Reset Stock\n"
+    "        8. Reset Coins\n"
+    "        9. Abort Program";
 ;
 
 int main(int argc, char **argv)
@@ -56,7 +58,7 @@ int main(int argc, char **argv)
         std::ifstream file1(argv[1]);
         if (!file1)
         {
-            std::cerr << "Failed to open stock.dat" << std::endl;
+            std::cerr << "Failed to open stock.dat" << endl;
             return EXIT_FAILURE;
         }
 
@@ -79,7 +81,7 @@ int main(int argc, char **argv)
 
             if (file_error)
             {
-                std::cout << "file error" << std::endl;
+                cout << "file error" << endl;
                 return EXIT_FAILURE;
             }
         }
@@ -87,17 +89,18 @@ int main(int argc, char **argv)
         std::ifstream file2(argv[2]);
         if (!file2)
         {
-            std::cerr << "Failed to open coin.dat" << std::endl;
+            std::cerr << "Failed to open coin.dat" << endl;
             return EXIT_FAILURE;
         }
 
         cash_register->LoadRegister(argv[2]);
     }
 
-    std::cout << menuText << std::endl;
-    while (true)
+    bool quitProgram = false;
+    while (!quitProgram)
     {
-        std::cout << "\nSelect your option (1-9):";
+        cout << menuText << endl;
+        cout << "\nSelect your option (1-9): ";
         string input = Helper::readInput();
 
         if (input == "1")
@@ -107,9 +110,9 @@ int main(int argc, char **argv)
         else if (input == "2")
         {
             // Purchasing
-            std::cout << "Purchase Item" << std::endl;
-            std::cout << "-------------" << std::endl;
-            std::cout << "Please enter the id of the item you wish to purchase:" << std::endl;
+            cout << "Purchase Item" << endl;
+            cout << "-------------" << endl;
+            cout << "Please enter the id of the item you wish to purchase:" << std::endl;
 
             // imma do the user validation stuff later (similar to option 5)
             string userInput = Helper::readInput();
@@ -118,9 +121,96 @@ int main(int argc, char **argv)
         }
         else if (input == "3")
         {
+            quitProgram = true;
         }
         else if (input == "4")
         {
+            // Get the next ID for the new item
+            string ID = linked_list->getNextID();
+            cout << "The id of the new stock will be: " << ID << endl;
+            // Initalize variables
+            bool success = false;
+            vector<string> tokens = {};
+            while (!success) {
+                // Get input from user
+                cout << "Enter the item name: ";
+                string itemName = Helper::readInput();
+                Helper::splitString(itemName, tokens, ".");
+                // If user input is whitespace, cancel add task
+                if (tokens.size() == 0) {
+                    success = true;
+                    Helper::cancelAddTask();
+               /*
+                * If length of input is above maximum length,
+                * alert user that the input is too long
+                */ 
+                } else if (itemName.length() > NAMELEN) {
+                    Helper::printLongInput();
+                } else {
+                     // Get input from user
+                    cout << "Enter the item description: ";
+                    string itemDesc = Helper::readInput();
+                    Helper::splitString(itemDesc, tokens, ".");
+                    // If user input is whitespace, cancel add task
+                    if (tokens.size() == 0) {
+                        success = true;
+                        Helper::cancelAddTask();
+                   /*
+                    * If length of input is above maximum length,
+                    * alert user that the input is too long
+                    */ 
+                    } else if (itemDesc.length() > DESCLEN) {
+                        Helper::printLongInput();
+                    } else {
+                        bool priceSuccess = false;
+                        while (priceSuccess == false) {
+                            // Get input from user
+                            cout << "Enter the item price: ";
+                            string itemPrice = Helper::readInput();
+                            Helper::splitString(itemPrice, tokens, ".");
+                            // If user input is whitespace, cancel add task
+                            if (tokens.size() == 0) {
+                                priceSuccess = true;
+                                success = true;
+                                Helper::cancelAddTask();
+                            // Check if input has two strings separated by "."
+                            } else if (tokens.size() == 2) {
+                                // Check if the two strings are numbers
+                                if (Helper::isNumber(tokens[0]) == true && 
+                                Helper::isNumber(tokens[1]) == true) {
+                                    // Check if the second string is divisible by 5
+                                    if (stoi(tokens[1]) % 5 == 0) {
+                                        // Create vector containing the new item's details
+                                        vector<string> data = Helper::createVector(
+                                        ID, itemName, itemDesc, itemPrice);
+                                        // Add item to inventory
+                                        linked_list->insert(data);
+                                        cout << "This item " << "\"" << itemName
+                                        << " - " << itemDesc << "\" has now " <<
+                                        "been added to the menu.\n";
+                                        priceSuccess = true;
+                                        success = true;
+                                    } else {
+                                       /*
+                                        * If second string (cents) is not divisible
+                                        * by 5, alert user
+                                        */ 
+                                        Helper::printCentsNotMultipleOf5();
+                                    }
+                                // If either string is not a number, alert user
+                                } else {
+                                    Helper::printInvalidPrice();
+                                }
+                            // If input is not two strings separated by ".", alert user
+                            } else {
+                                Helper::printInvalidPrice();
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
         }
         else if (input == "5")
         {
@@ -139,6 +229,16 @@ int main(int argc, char **argv)
         else if (input == "6")
         {
             cash_register->display_coins();
+        }
+
+        else if (input == "7") {
+            linked_list->resetStock();
+            std::cout << "All stock has been reset to the default level of "
+            << DEFAULT_STOCK_LEVEL;
+        }
+
+        else if (input == "9") {
+            quitProgram = true;
         }
     }
 

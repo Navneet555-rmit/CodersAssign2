@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string.h>
 #include <random>
+#include "Node.h"
 
 class Helper
 {
@@ -57,7 +58,14 @@ public:
     //chatGPT with prompt: want it so that if the user types 200 I return the value $2.00 in c++
     static std::string convert_cents_to_dollars(std::string userInput);
 
-  
+    static void cancelAddTask();
 
+    static void printLongInput();
+
+    static std::vector<std::string> createVector(std::string id, std::string name, std::string desc, std::string price);
+
+    static void printInvalidPrice();
+    
+    static void printCentsNotMultipleOf5();
 };
 #endif

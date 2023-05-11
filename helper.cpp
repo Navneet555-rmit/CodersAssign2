@@ -156,3 +156,34 @@ std::string Helper::convert_cents_to_dollars(std::string userInput)
     formatted << "$" << dollars << "." << std::setfill('0') << std::setw(2) << cents_remaining;
     return formatted.str();
 }
+
+void Helper::cancelAddTask()
+{
+    std::cout << "Cancelling \"add item\" at user's request.\n"; 
+    std::cout << "The task Add Item failed to run successfully.\n";
+}
+
+void Helper::printLongInput()
+{
+    std::cout << "Error: line entered was too long. Please try again.\n";
+}
+
+vector<string> Helper::createVector(string id, string name, string desc, string price) {
+    vector<string> data = {};
+    data.push_back(id);
+    data.push_back(name);
+    data.push_back(desc);
+    data.push_back(price);
+    data.push_back(std::to_string(DEFAULT_STOCK_LEVEL));
+    return data;
+}
+
+void Helper::printInvalidPrice()
+{
+    std::cout << "Error: the price is not valid.\n";
+}
+
+void Helper::printCentsNotMultipleOf5()
+{
+    std::cout << "Error: the cents need to be a multiple of 5.\n";
+}

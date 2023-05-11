@@ -38,6 +38,8 @@ public:
     Node* getID(string index);
 
     bool ValidUserInputForPurchase(std::string userInput);
+    void resetStock();
+    string getNextID();
 private:
     // the beginning of the list
     Node* head;

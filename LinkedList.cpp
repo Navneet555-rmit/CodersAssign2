@@ -60,26 +60,43 @@ bool LinkedList::insert(std::vector<std::string> data)
     Node *new_node = new Node();
     new_node->data = new_stock;
 
+
     Node *current = head;
     Node *prev = nullptr;
 
-    while (current != nullptr && current->data->name < new_stock->name)
-    {
-        prev = current;
-        current = current->next;
-    }
-
-    if (prev == nullptr)
-    {
+    if (current == nullptr) {
         new_node->next = head;
         head = new_node;
-    }
-    else
-    {
-        prev->next = new_node;
-        new_node->next = current;
-    }
+    } else {
+        std::string stockName = new_stock->name;
+        std::string currentStockName = current->data->name;
+        transform(stockName.begin(), stockName.end(), 
+        stockName.begin(), ::toupper);
+        transform(currentStockName.begin(), currentStockName.end(), 
+        currentStockName.begin(), ::toupper);
+        while (current->next != nullptr && currentStockName < stockName) {
+            prev = current;
+            current = current->next;
+            currentStockName = current->data->name;
+            transform(currentStockName.begin(), currentStockName.end(), 
+            currentStockName.begin(), ::toupper);
+        }
 
+        if (prev == nullptr)
+        {
+            new_node->next = head;
+            head = new_node;
+        }
+
+        else if (stockName > currentStockName) {
+            current->next = new_node;
+            new_node->next = nullptr;
+        }
+        else {
+            prev->next = new_node;
+            new_node->next = current;
+        }
+    }
     count += 1;
     return true;
 }
@@ -332,4 +349,44 @@ Node *LinkedList::getID(string index)
     }
 
     return ret_item;
+}
+
+void LinkedList::resetStock() {
+    Node *current = head;
+
+    while (current)
+    {
+        current->data->on_hand = DEFAULT_STOCK_LEVEL;
+        current = current->next;
+    }
+}
+
+string LinkedList::getNextID() {
+    Node* current = head;
+    std::string currentItem = current->data->id;
+    std::string nextItem = "";
+    int currentID = std::stoi(currentItem.substr(1));
+    int nextID = 0;
+    while (current->next != NULL) {
+        current = current->next;
+        nextItem = current->data->id;
+        nextID = std::stoi(nextItem.substr(1));
+        if (nextID > currentID) {
+            currentID = nextID;
+            currentItem = nextItem;
+        }
+    }
+    currentID += 1;
+    std::string newID = "I" + std::to_string(currentID);
+    int numOfDigits = 0;
+    while (currentID != 0) {
+        currentID = currentID / 10;
+        numOfDigits += 1;
+    }
+    int i = 1;
+    while (i != IDLEN-numOfDigits) {
+        newID.insert(1, "0");
+        i += 1;
+    }
+    return newID;
 }
