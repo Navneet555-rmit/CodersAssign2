@@ -65,7 +65,9 @@ public:
     static std::vector<std::string> createVector(std::string id, std::string name, std::string desc, std::string price);
 
     static void printInvalidPrice();
-    
+
     static void printCentsNotMultipleOf5();
+
+    static void printInputNotNumber();
 };
 #endif

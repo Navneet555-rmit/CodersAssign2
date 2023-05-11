@@ -101,36 +101,42 @@ int main(int argc, char **argv)
     {
         cout << menuText << endl;
         cout << "\nSelect your option (1-9): ";
+        vector<string> tokens = {};
         string input = Helper::readInput();
+        Helper::splitString(input, tokens, " ");
 
-        if (input == "1")
+        if (tokens.size() == 0) {
+            quitProgram = true;
+        }
+
+        else if (tokens.size() == 1 && tokens[0] == "1")
         {
             linked_list->DisplayItems();
         }
-        else if (input == "2")
+        else if (tokens.size() == 1 && tokens[0] == "2")
         {
             // Purchasing
             cout << "Purchase Item" << endl;
             cout << "-------------" << endl;
-            cout << "Please enter the id of the item you wish to purchase:" << std::endl;
+            cout << "Please enter the id of the item you wish to purchase: ";
 
             // imma do the user validation stuff later (similar to option 5)
             string userInput = Helper::readInput();
 
             linked_list->BuyItem(userInput, *cash_register);
         }
-        else if (input == "3")
+        else if (tokens.size() == 1 && tokens[0] == "3")
         {
             quitProgram = true;
         }
-        else if (input == "4")
+        else if (tokens.size() == 1 && tokens[0] == "4")
         {
             // Get the next ID for the new item
             string ID = linked_list->getNextID();
             cout << "The id of the new stock will be: " << ID << endl;
             // Initalize variables
             bool success = false;
-            vector<string> tokens = {};
+
             while (!success) {
                 // Get input from user
                 cout << "Enter the item name: ";
@@ -212,7 +218,7 @@ int main(int argc, char **argv)
                 
             }
         }
-        else if (input == "5")
+        else if (tokens.size() == 1 && tokens[0] == "5")
         {
             std::cout << "Please select the item you want to remove" << std::endl;
 
@@ -226,19 +232,26 @@ int main(int argc, char **argv)
                 }
             }
         }
-        else if (input == "6")
+        else if (tokens.size() == 1 && tokens[0]  == "6")
         {
             cash_register->display_coins();
         }
 
-        else if (input == "7") {
+        else if (tokens.size() == 1 && tokens[0]  == "7") {
             linked_list->resetStock();
             std::cout << "All stock has been reset to the default level of "
             << DEFAULT_STOCK_LEVEL;
         }
 
-        else if (input == "9") {
+        else if (tokens.size() == 1 && tokens[0]  == "9") {
             quitProgram = true;
+        }
+        else {
+            if (tokens.size() >= 2 || Helper::isNumber(tokens[0]) == false) {
+                Helper::printInputNotNumber();
+            } else {
+                Helper::printInvalidInput();
+            }
         }
     }
 

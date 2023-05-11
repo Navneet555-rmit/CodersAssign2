@@ -12,8 +12,7 @@ Helper::Helper() {}
 
 void Helper::printInvalidInput()
 {
-    std::cout << "Invalid input.\n"
-              << std::endl;
+    std::cout << "Error: menu item selected is not valid.\n";
 }
 
 bool Helper::isNumber(string s)
@@ -186,4 +185,8 @@ void Helper::printInvalidPrice()
 void Helper::printCentsNotMultipleOf5()
 {
     std::cout << "Error: the cents need to be a multiple of 5.\n";
+}
+
+void Helper::printInputNotNumber() {
+    std::cout << "Error: input was not a number. Please try again.\n";
 }

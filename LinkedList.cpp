@@ -245,10 +245,12 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
         {
 
             // gonna make it so that it gets the first 7 letters and last 7 letters and leave ... in middle
-            std::cout << "You have selected "
+            std::cout << "You have selected \""
+                      << selected_node->data->name
+                      << " - "
                       << selected_node->data->description
-                      << ". This will cost you $ " << std::to_string(selected_node->data->price.dollars)
-                      << "." << std::to_string(selected_node->data->price.cents)
+                      << "\". This will cost you $ " << std::to_string(selected_node->data->price.dollars)
+                      << "." << std::to_string(selected_node->data->price.cents) << "."
                       << std::endl;
 
             std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
