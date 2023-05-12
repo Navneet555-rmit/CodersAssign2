@@ -82,13 +82,7 @@ bool LinkedList::insert(std::vector<std::string> data)
             currentStockName.begin(), ::toupper);
         }
 
-        if (prev == nullptr)
-        {
-            new_node->next = head;
-            head = new_node;
-        }
-
-        else if (stockName > currentStockName) {
+        if (stockName > currentStockName) {
             current->next = new_node;
             new_node->next = nullptr;
         }
@@ -365,30 +359,54 @@ void LinkedList::resetStock() {
 
 string LinkedList::getNextID() {
     Node* current = head;
-    std::string currentItem = current->data->id;
-    std::string nextItem = "";
-    int currentID = std::stoi(currentItem.substr(1));
-    int nextID = 0;
-    while (current->next != NULL) {
-        current = current->next;
-        nextItem = current->data->id;
-        nextID = std::stoi(nextItem.substr(1));
-        if (nextID > currentID) {
-            currentID = nextID;
-            currentItem = nextItem;
+    std::string newID = "";
+    if (current == nullptr) {
+        newID = "I0001";
+    } else {
+        std::string currentItem = current->data->id;
+        std::string nextItem = "";
+        int currentID = std::stoi(currentItem.substr(1));
+        int nextID = 0;
+        while (current->next != NULL) {
+            current = current->next;
+            nextItem = current->data->id;
+            nextID = std::stoi(nextItem.substr(1));
+            if (nextID > currentID) {
+                currentID = nextID;
+                currentItem = nextItem;
+            }
         }
-    }
-    currentID += 1;
-    std::string newID = "I" + std::to_string(currentID);
-    int numOfDigits = 0;
-    while (currentID != 0) {
-        currentID = currentID / 10;
-        numOfDigits += 1;
-    }
-    int i = 1;
-    while (i != IDLEN-numOfDigits) {
-        newID.insert(1, "0");
-        i += 1;
+        currentID += 1;
+        newID = "I" + std::to_string(currentID);
+        int numOfDigits = 0;
+        while (currentID != 0) {
+            currentID = currentID / 10;
+            numOfDigits += 1;
+        }
+        int i = 1;
+        while (i != IDLEN-numOfDigits) {
+            newID.insert(1, "0");
+            i += 1;
+        }
+
     }
     return newID;
+
+}
+
+void LinkedList::saveStock(string stockFile) {
+    Node* current = head;
+ 
+    std::ofstream file;
+    file.open(stockFile);
+ 
+    while (current)
+    {
+        file << current->data->id<<"|"<<current->data->name<<
+        "|"<<current->data->description<<"|"<<current->data->price.dollars<<"."
+        <<current->data->price.cents<<"|"<<current->data->on_hand<<"\n";
+        current = current->next;
+    }
+ 
+    file.close();
 }

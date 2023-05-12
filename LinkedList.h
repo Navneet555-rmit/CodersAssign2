@@ -37,9 +37,10 @@ public:
 
     Node* getID(string index);
 
-    bool ValidUserInputForPurchase(std::string userInput);
+    bool ValidUserInputForPurchase(string userInput);
     void resetStock();
     string getNextID();
+    void saveStock(string file);
 private:
     // the beginning of the list
     Node* head;

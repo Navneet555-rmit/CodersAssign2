@@ -62,12 +62,12 @@ int main(int argc, char **argv)
             return EXIT_FAILURE;
         }
 
-        std::string line;
+        string line;
         while (std::getline(file1, line))
         {
 
             bool file_error = false;
-            std::vector<std::string> tokens = {};
+            vector<string> tokens = {};
             Helper::splitString(line, tokens, "|");
 
             if (tokens.size() == 5)
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 
         cash_register->LoadRegister(argv[2]);
     }
-
+    
     bool quitProgram = false;
     while (!quitProgram)
     {
@@ -127,6 +127,7 @@ int main(int argc, char **argv)
         }
         else if (tokens.size() == 1 && tokens[0] == "3")
         {
+            linked_list->saveStock(argv[1]);
             quitProgram = true;
         }
         else if (tokens.size() == 1 && tokens[0] == "4")
@@ -220,7 +221,7 @@ int main(int argc, char **argv)
         }
         else if (tokens.size() == 1 && tokens[0] == "5")
         {
-            std::cout << "Please select the item you want to remove" << std::endl;
+            cout << "Please select the item you want to remove" << endl;
 
             string userInput = Helper::readInput();
 
@@ -232,18 +233,22 @@ int main(int argc, char **argv)
                 }
             }
         }
-        else if (tokens.size() == 1 && tokens[0]  == "6")
+        else if (tokens.size() == 1 && tokens[0] == "6")
         {
             cash_register->display_coins();
         }
 
-        else if (tokens.size() == 1 && tokens[0]  == "7") {
+        else if (tokens.size() == 1 && tokens[0] == "7") {
             linked_list->resetStock();
-            std::cout << "All stock has been reset to the default level of "
+            cout << "All stock has been reset to the default level of "
             << DEFAULT_STOCK_LEVEL;
         }
 
-        else if (tokens.size() == 1 && tokens[0]  == "9") {
+        else if (tokens.size() == 1 && tokens[0] == "8") {
+
+        }
+
+        else if (tokens.size() == 1 && tokens[0] == "9") {
             quitProgram = true;
         }
         else {
