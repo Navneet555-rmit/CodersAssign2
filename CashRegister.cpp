@@ -202,3 +202,15 @@ bool CashRegister::GetChange(int change)
 
     return can_do_payment;
 }
+
+void CashRegister::saveRegister(string coinFile) {
+    std::ofstream file;
+    file.open(coinFile);
+ 
+    for (const auto &coin : this->coins)
+    {
+        file << coin->denom << "," << coin->count << std::endl;
+    }
+ 
+    file.close();
+}

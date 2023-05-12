@@ -40,7 +40,7 @@ public:
     bool ValidUserInputForPurchase(string userInput);
     void resetStock();
     string getNextID();
-    void saveStock(string file);
+    void saveStock(string stockFile);
 private:
     // the beginning of the list
     Node* head;

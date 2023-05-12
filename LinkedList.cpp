@@ -257,7 +257,7 @@ void LinkedList::BuyItem(string userInput, CashRegister cash_register)
             {
                 std::cout << "You still need to give us "
                           << std::to_string(cash_owed)
-                          << ":" << std::endl;
+                          << ": ";
 
                 string userInput_given_money = Helper::readInput();
 

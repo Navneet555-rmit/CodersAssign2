@@ -41,7 +41,7 @@ class CashRegister{
 
         void display_coins();
 
-        
+        void saveRegister(string coinFile);
 };
 
 #endif 

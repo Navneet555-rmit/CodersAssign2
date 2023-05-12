@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
             if (file_error)
             {
-                cout << "file error" << endl;
+                cout << "File error" << endl;
                 return EXIT_FAILURE;
             }
         }
@@ -128,6 +128,7 @@ int main(int argc, char **argv)
         else if (tokens.size() == 1 && tokens[0] == "3")
         {
             linked_list->saveStock(argv[1]);
+            cash_register->saveRegister(argv[2]);
             quitProgram = true;
         }
         else if (tokens.size() == 1 && tokens[0] == "4")
