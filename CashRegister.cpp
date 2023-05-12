@@ -100,14 +100,14 @@ bool CashRegister::LoadRegister(string file_name)
             }
             else
             {
-                std::cout << file_name << " : "
+                std::cout << coin_denom << " : "
                           << "nots a number" << std::endl;
                 return false;
             }
         }
         else
         {
-            std::cout << file_name << " : "
+            std::cout << line << " : "
                       << "coins_output.size()!=2" << std::endl;
             return false;
         }

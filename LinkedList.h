@@ -41,6 +41,7 @@ public:
     void resetStock();
     string getNextID();
     void saveStock(string stockFile);
+    void addStock(LinkedList *linked_list);
 private:
     // the beginning of the list
     Node* head;
