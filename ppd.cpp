@@ -161,7 +161,7 @@ int main(int argc, char **argv)
         }
 
         else if (tokens.size() == 1 && tokens[0] == "8") {
-
+            cash_register->resetCoin();
         }
 
         else if (tokens.size() == 1 && tokens[0] == "9") {

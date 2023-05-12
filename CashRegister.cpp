@@ -214,3 +214,16 @@ void CashRegister::saveRegister(string coinFile) {
  
     file.close();
 }
+
+void CashRegister::resetCoin() {
+    std::ofstream file;
+
+     for (size_t i = 0; i < coins.size(); i++) {
+        coins[i]->count = DEFAULT_COIN_COUNT;
+        
+    }
+
+    std::cout << "All coins have been reset to the default level of " << DEFAULT_COIN_COUNT << std::endl;
+
+
+}
